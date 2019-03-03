@@ -15,5 +15,5 @@ setup(
     author_email='maikka39@gmail.com',
     url='https://github.com/maikka39/Toy-Neural-Network-Py',
     license=license,
-    packages=find_packages(exclude=('docs'))
+    packages=find_packages(exclude=('docs', 'tests'))
 )
