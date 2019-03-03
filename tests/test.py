@@ -1,9 +1,6 @@
-"""
-Created by: Maik de Kruif (maikka39)
-"""
-import time
 from random import randint
-from tkinter import Canvas, Tk
+
+import matplotlib.pyplot as plt
 
 # Otherwise my beautifier somehow f*cks it up
 if True:
@@ -14,81 +11,69 @@ if True:
 
     import tnnp.tnnp as nn
 
+canvas_width_min = -10
+canvas_width_max = 10
+canvas_height_min = -10
+canvas_height_max = 10
 
-class Point:
-    def __init__(self, canvas, color, train_point=False):
-        self.x = randint(0, canvas_width)
-        self.y = randint(0, canvas_height)
-        # self.x = 0
-        # self.y = 0
 
-        self.canvas = canvas
+fig, ax = plt.subplots()
+ax.axis([canvas_width_min, canvas_width_max,
+         canvas_height_min, canvas_height_max])
 
-        if self.y >= formula(self.x):
-            self.label = 1
-            outline_color = "green"
-        else:
-            self.label = -1
-            # outline_color = "red"
-            outline_color = "green"
-
-        if train_point:
-            return
-
-        self.id = canvas.create_oval(-8, -8, 8, 8,
-                                     fill=color, outline=outline_color, width=3)
-        self.canvas.move(self.id, self.x, self.y)
-
-    def change_color(self, color):
-        self.canvas.itemconfig(self.id, fill=color)
+ax.set(xlabel='X', ylabel='Y',
+       title='NeuralNetwork Test')
+ax.grid()
 
 
 def formula(x):
     # return 1 * x
-    return 1 * x + 100
+    return 1 * x + 1
 
 
-def draw_once():
-    y = 0
-    last_x = 0
-    for x in range(canvas_width):
-        last_y = y
-        y = formula(x)
-        canvas.create_line(last_x, last_y, x, y, fill="#000000", width=4)
-        last_x = x
+class Point:
+    def __init__(self, color="red", thickness=2, train_point=False):
+        self.x = randint(canvas_width_min, canvas_width_max)
+        self.y = randint(canvas_height_min, canvas_height_max)
 
-    # canvas.create_line(0, 0, canvas_width, canvas_height, fill="#000000")
+        self.thickness = thickness
+        # self.x = 0
+        # self.y = 0
+
+        if self.y >= formula(self.x):
+            self.label = 1
+        else:
+            self.label = -1
+
+        if train_point:
+            return
+
+        ax.scatter(self.x, self.y, s=self.thickness * 50, c=color)
+
+    def change_color(self, color):
+        ax.scatter(self.x, self.y, s=self.thickness * 50, c=color)
 
 
-def draw():
-    for train_point in [Point(canvas, "white", train_point=True) for i in range(1000)]:
+formula_line_x = []
+formula_line_y = []
+for x in range(canvas_width_min, canvas_width_max + 1):
+    formula_line_x.append(x)
+    formula_line_y.append(formula(x))
+ax.plot(formula_line_x, formula_line_y, linewidth=3)
+
+
+perceptron = nn.Perceptron()
+points = [Point("red") for i in range(100)]
+
+while True:
+    for train_point in [Point(train_point=True) for i in range(100)]:
         perceptron.train((train_point.x, train_point.y), train_point.label)
 
     for point in points:
         if perceptron.guess((point.x, point.y)) == point.label:
             point.change_color("green")
-        else:
-            point.change_color("red")
 
-    canvas.after(int(1000 / fps), draw)  # Loop every X ms
+    plt.pause(0.50)
 
 
-if __name__ == '__main__':
-    window = Tk()
-    window.title("NeuralNetwork Testing")
-    window.resizable(0, 0)
-    window.wm_attributes("-topmost", 1)  # Always keep window on top of others
-    canvas_width = 400
-    canvas_height = 400
-    canvas = Canvas(window, width=canvas_width,
-                    height=canvas_height, bd=0, highlightthickness=0)
-    canvas.pack()
-
-    perceptron = nn.Perceptron()
-
-    points = [Point(canvas, "white") for i in range(1000)]
-    fps = 60
-
-    draw_once()
-    draw()
-    window.mainloop()
+plt.show()
