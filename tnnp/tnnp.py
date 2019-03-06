@@ -15,9 +15,10 @@ def sign(n):
 class Perceptron:
     """docstring for Perceptron."""
 
-    def __init__(self, amount_of_inputs, learning_rate=0.1):
+    def __init__(self, amount_of_inputs):
         self.amount_of_inputs = amount_of_inputs + 1  # Add 1 to the amount for the bias
-        self.learning_rate = learning_rate
+        # TODO: Make learning_rate dynamic
+        self.learning_rate = 0.01
 
         # Initialize with random weights
         self.weights = [randint(-1, 1) for i in range(self.amount_of_inputs)]
