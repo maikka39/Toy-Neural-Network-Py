@@ -33,6 +33,9 @@ def formula(x):
 
 class Point:
     def __init__(self, x=None, y=None, color="red", thickness=2, train_point=False):
+        self.x = x
+        self.y = y
+
         if not x:
             self.x = randint(canvas_width_min, canvas_width_max)
         if not y:
