@@ -15,14 +15,20 @@ def sign(n):
 class Perceptron:
     """docstring for Perceptron."""
 
-    def __init__(self, learning_rate=0.1):
+    def __init__(self, amount_of_inputs, learning_rate=0.1):
+        self.amount_of_inputs = amount_of_inputs + 1  # Add 1 to the amount for the bias
         self.learning_rate = learning_rate
 
         # Initialize with random weights
-        self.weights = [randint(-1, 1) for i in range(2)]
+        self.weights = [randint(-1, 1) for i in range(self.amount_of_inputs)]
+        self.bias = 1
 
     def guess(self, inputs):
         """Function to predict the output"""
+        # Add a bias to the input
+        inputs = list(inputs)
+        inputs.append(self.bias)
+
         # Sum all the inputs multiplied by their weights
         sum = 0
         for input, weight in zip(inputs, self.weights):
@@ -31,9 +37,19 @@ class Perceptron:
         return sign(sum)
 
     def train(self, inputs, target):
+        inputs = list(inputs)
+
         guess = self.guess(inputs)
         error = target - guess
 
         # Tune all weights
         self.weights = [weight + error * input * self.learning_rate for weight,
-                        input in zip(self.weights, inputs)]
+                        input in zip(self.weights, inputs + [self.bias])]
+        return self.weights
+
+    def guessY(self, x):
+        # w0 + w1 * x + w2 * b
+        try:
+            return -(self.weights[2] / self.weights[1]) - (self.weights[0] / self.weights[1]) * x
+        except ZeroDivisionError:
+            return 0

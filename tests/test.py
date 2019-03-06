@@ -22,21 +22,19 @@ ax.axis([canvas_width_min, canvas_width_max,
          canvas_height_min, canvas_height_max])
 
 ax.set(xlabel='X', ylabel='Y',
-       title='NeuralNetwork Test')
+       title='Perceptron Test')
 ax.grid()
 
 
 def formula(x):
-    # return 1 * x
-    return 1 * x + 1
+    # f(x) = mx + b
+    return 2 * x + 4
 
 
 class Point:
     def __init__(self, color="red", thickness=2, train_point=False):
         self.x = randint(canvas_width_min, canvas_width_max)
         self.y = randint(canvas_height_min, canvas_height_max)
-
-        self.thickness = thickness
         # self.x = 0
         # self.y = 0
 
@@ -48,10 +46,13 @@ class Point:
         if train_point:
             return
 
-        ax.scatter(self.x, self.y, s=self.thickness * 50, c=color)
+        self.thickness = thickness
+
+        self.scatter = ax.scatter(
+            self.x, self.y, s=self.thickness * 50, c=color)
 
     def change_color(self, color):
-        ax.scatter(self.x, self.y, s=self.thickness * 50, c=color)
+        self.scatter.set_color(color)
 
 
 formula_line_x = []
@@ -59,21 +60,34 @@ formula_line_y = []
 for x in range(canvas_width_min, canvas_width_max + 1):
     formula_line_x.append(x)
     formula_line_y.append(formula(x))
-ax.plot(formula_line_x, formula_line_y, linewidth=3)
+ax.plot(formula_line_x, formula_line_y, linewidth=3, c="black")
 
 
-perceptron = nn.Perceptron()
+perceptron = nn.Perceptron(2)
 points = [Point("red") for i in range(100)]
 
+# Plot guessed line
+guess_line = ax.plot(
+    (canvas_width_min, canvas_width_max),
+    (perceptron.guessY(canvas_width_min), perceptron.guessY(canvas_width_max)),
+    linewidth=3, c="blue")
+
 while True:
-    for train_point in [Point(train_point=True) for i in range(100)]:
+    for train_point in [Point(train_point=True) for i in range(1000)]:
         perceptron.train((train_point.x, train_point.y), train_point.label)
 
     for point in points:
         if perceptron.guess((point.x, point.y)) == point.label:
             point.change_color("green")
 
-    plt.pause(0.50)
+    # Plot guessed line
+    guess_line.pop().remove()  # Remove previous guess
+    guess_line = ax.plot(
+        (canvas_width_min, canvas_width_max),
+        (perceptron.guessY(canvas_width_min), perceptron.guessY(canvas_width_max)),
+        linewidth=3, c="blue")
+
+    plt.pause(0.5)
 
 
 plt.show()
