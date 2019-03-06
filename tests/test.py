@@ -32,9 +32,11 @@ def formula(x):
 
 
 class Point:
-    def __init__(self, color="red", thickness=2, train_point=False):
-        self.x = randint(canvas_width_min, canvas_width_max)
-        self.y = randint(canvas_height_min, canvas_height_max)
+    def __init__(self, x=None, y=None, color="red", thickness=2, train_point=False):
+        if not x:
+            self.x = randint(canvas_width_min, canvas_width_max)
+        if not y:
+            self.y = randint(canvas_height_min, canvas_height_max)
         # self.x = 0
         # self.y = 0
 
@@ -64,7 +66,7 @@ ax.plot(formula_line_x, formula_line_y, linewidth=3, c="black")
 
 
 perceptron = nn.Perceptron(2)
-points = [Point("red") for i in range(100)]
+points = [Point(color="red") for i in range(100)]
 
 # Plot guessed line
 guess_line = ax.plot(
@@ -79,6 +81,8 @@ while True:
     for point in points:
         if perceptron.guess((point.x, point.y)) == point.label:
             point.change_color("green")
+        else:
+            point.change_color("red")
 
     # Plot guessed line
     guess_line.pop().remove()  # Remove previous guess
@@ -87,7 +91,7 @@ while True:
         (perceptron.guessY(canvas_width_min), perceptron.guessY(canvas_width_max)),
         linewidth=3, c="blue")
 
-    plt.pause(0.5)
+    plt.pause(0.05)
 
 
 plt.show()
