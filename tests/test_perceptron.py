@@ -2,14 +2,7 @@ from random import randint
 
 import matplotlib.pyplot as plt
 
-# Otherwise my beautifier somehow f*cks it up
-if True:
-    import sys
-    import os
-    sys.path.insert(0, os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..')))
-
-    import tnnp.perceptron as pct
+import tnnp.perceptron as pct
 
 canvas_width_min = -10
 canvas_width_max = 10
