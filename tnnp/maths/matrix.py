@@ -48,3 +48,14 @@ def multiply(a, b):
             result.matrix[i][j] = sum
 
     return result
+
+
+def transpose(m):
+    """Transpose a matrix."""
+    result = Matrix(m.cols, m.rows)
+
+    for i in range(result.rows):
+        for j in range(result.cols):
+            result.matrix[i][j] = m.matrix[j][i]
+
+    return result

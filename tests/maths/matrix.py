@@ -1,4 +1,4 @@
-from tnnp.maths.matrix import Matrix, multiply
+from tnnp.maths.matrix import Matrix, multiply, transpose
 
 m = Matrix(3, 2)
 if not m.matrix == [[0, 0], [0, 0], [0, 0]]:
@@ -12,7 +12,6 @@ if not m.matrix == [[5, 5], [5, 5], [5, 5]]:
 m.multiply(3)
 if not m.matrix == [[15, 15], [15, 15], [15, 15]]:
     raise Exception(".multiply function not working", m.matrix)
-
 
 n = Matrix(3, 2)
 n.randomize()
@@ -32,5 +31,12 @@ b.matrix = [[21, 19], [17, 18], [18, 23]]
 c = multiply(a, b)
 if not c.matrix == [[410, 443], [330, 349]]:
     raise Exception("multiply function not working", c.matrix)
+
+a = Matrix(2, 3)
+a.matrix = [[1, 1, 1], [2, 2, 2]]
+a = transpose(a)
+if not a.matrix == [[1, 2], [1, 2], [1, 2]]:
+    raise Exception("transpose function not working", a.matrix)
+
 
 print("No errors were found!")
