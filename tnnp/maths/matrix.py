@@ -11,6 +11,11 @@ class Matrix(object):
         self.matrix = [[0 for col in range(self.cols)]
                        for row in range(self.rows)]
 
+    def fill(self, n):
+        """Set all values to a number."""
+        self.matrix = [[n for value in self.matrix[row]]
+                       for row in range(len(self.matrix))]
+
     def multiply(self, n):
         """Multiply all values in the matrix by a number."""
         self.matrix = [[value * n for value in self.matrix[row]]
@@ -29,6 +34,11 @@ class Matrix(object):
     def randomize(self, smallest=1, biggest=10):
         """Randomize all values in the matrix."""
         self.matrix = [[randint(smallest, biggest) for value in self.matrix[row]]
+                       for row in range(len(self.matrix))]
+
+    def map(self, fn):
+        """Run a function over every value in the matrix."""
+        self.matrix = [[fn(value) for value in self.matrix[row]]
                        for row in range(len(self.matrix))]
 
 
