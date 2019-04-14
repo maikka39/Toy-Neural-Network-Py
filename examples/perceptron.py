@@ -71,7 +71,7 @@ guess_line = ax.plot(
     linewidth=3, c="blue")
 
 while True:
-    for train_point in [Point(train_point=True) for i in range(1000)]:
+    for train_point in [Point(train_point=True) for i in range(15)]:
         perceptron.train((train_point.x, train_point.y), train_point.label)
 
     for point in points:
