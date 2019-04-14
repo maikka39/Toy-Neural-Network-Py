@@ -5,15 +5,35 @@ import tnnp.maths.matrix as matrix
 # from tnnp.maths.matrix import Matrix, multiply, transpose
 
 
+class ActivationFunction(object):
+    """Activation Function."""
+
+    def __init__(self, func, dfunc):
+        self.func = func
+        self.dfunc = dfunc
+
+
+sigmoid = ActivationFunction(
+    lambda n: 1 / (1 + exp(-n)),
+    lambda n: n * (1 - n)
+)
+
+tanh = ActivationFunction(
+    lambda n: (1 - exp(-2 * n)) / (1 + exp(-2 * n)),
+    lambda n: 1 - (n * n)
+)
+
+
 class NeuralNetwork(object):
     """Multi Layer NeuralNetwork."""
 
-    def __init__(self, input_nodes, hidden_nodes, output_nodes, learning_rate=0.1):
+    def __init__(self, input_nodes, hidden_nodes, output_nodes):
         self.input_nodes = input_nodes
         self.hidden_nodes = hidden_nodes
         self.output_nodes = output_nodes
 
-        self.learning_rate = learning_rate
+        self.setLearningRate()
+        self.setActivationFunction()
 
         self.weights_ih = matrix.Matrix(self.hidden_nodes, self.input_nodes)
         self.weights_ho = matrix.Matrix(self.output_nodes, self.hidden_nodes)
@@ -25,17 +45,23 @@ class NeuralNetwork(object):
         self.bias_h.fill(1)
         self.bias_o.fill(1)
 
+    def setLearningRate(self, learning_rate=0.1):
+        self.learning_rate = learning_rate
+
+    def setActivationFunction(self, fn=sigmoid):
+        self.activation_function = fn
+
     def feedforward(self, input_array):
         """Returns the guessed output from the input"""
         inputs = matrix.from_array(input_array)
 
         hidden = matrix.multiply(self.weights_ih, inputs)
         hidden.add(self.bias_h)
-        hidden.map(sign)
+        hidden.map(self.activation_function.func)
 
         outputs = matrix.multiply(self.weights_ho, hidden)
         outputs.add(self.bias_o)
-        outputs.map(sign)
+        outputs.map(self.activation_function.func)
 
         return outputs.to_array()
 
@@ -44,17 +70,17 @@ class NeuralNetwork(object):
 
         hidden = matrix.multiply(self.weights_ih, inputs)
         hidden.add(self.bias_h)
-        hidden.map(sign)
+        hidden.map(self.activation_function.func)
 
         outputs = matrix.multiply(self.weights_ho, hidden)
         outputs.add(self.bias_o)
-        outputs.map(sign)
+        outputs.map(self.activation_function.func)
 
         targets = matrix.from_array(target_array)
 
         output_errors = matrix.substract(targets, outputs)
 
-        gradients = matrix.map(outputs, dsign)
+        gradients = matrix.map(outputs, self.activation_function.dfunc)
         gradients.multiply(output_errors)
         gradients.multiply(self.learning_rate)
 
@@ -67,7 +93,7 @@ class NeuralNetwork(object):
         weights_ho_t = matrix.transpose(self.weights_ho)
         hidden_errors = matrix.multiply(weights_ho_t, output_errors)
 
-        hidden_gradients = matrix.map(hidden, dsign)
+        hidden_gradients = matrix.map(hidden, self.activation_function.dfunc)
         hidden_gradients.multiply(hidden_errors)
         hidden_gradients.multiply(self.learning_rate)
 
@@ -83,12 +109,3 @@ class NeuralNetwork(object):
 
     # Set aliasses
     guess = feedforward
-
-
-def sign(n):
-    """The activation function"""
-    return 1 / (1 + exp(-n))
-
-
-def dsign(n):
-    return n * (1 - n)
