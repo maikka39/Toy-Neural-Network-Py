@@ -18,6 +18,10 @@ class Matrix(object):
 
     def multiply(self, n):
         """Multiply all values in the matrix by a number."""
+        if isinstance(n, Matrix):
+            self.matrix = multiply(self, n).matrix
+            return
+
         self.matrix = [[value * n for value in self.matrix[row]]
                        for row in range(len(self.matrix))]
 
