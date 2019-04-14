@@ -107,5 +107,11 @@ class NeuralNetwork(object):
         # print(targets.matrix)
         # print(error.matrix)
 
+    def mutate(self, func):
+        self.weights_ih.map(func)
+        self.weights_ho.map(func)
+        self.bias_h.map(func)
+        self.bias_o.map(func)
+
     # Set aliasses
     guess = feedforward
