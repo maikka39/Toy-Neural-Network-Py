@@ -1,4 +1,4 @@
-from tnnp.maths.matrix import Matrix, from_array, multiply, to_array, transpose
+from tnnp.maths.matrix import Matrix, from_array, multiply, transpose
 
 m = Matrix(3, 2)
 if not m.matrix == [[0, 0], [0, 0], [0, 0]]:
@@ -63,12 +63,6 @@ if not n.matrix == [[1, 2], [1, 2], [1, 2]]:
 m = from_array([1, 2, 3, 4])
 if not m.matrix == [[1], [2], [3], [4]]:
     raise Exception("from_array function not working", m.matrix)
-
-m = Matrix(3, 2)
-m.fill(1)
-n = to_array(m)
-if not n == [1, 1, 1, 1, 1, 1]:
-    raise Exception(".to_array function not working", n)
 
 
 print("No errors were found!")

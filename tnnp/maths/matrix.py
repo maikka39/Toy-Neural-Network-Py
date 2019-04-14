@@ -42,8 +42,14 @@ class Matrix(object):
                        for row in range(len(self.matrix))]
 
     def to_array(self):
-        """Alias of to_array(self)"""
-        return to_array(self)
+        """Convert a matrix to an array"""
+        arr = []
+
+        for row in range(len(self.matrix)):
+            for value in self.matrix[row]:
+                arr.append(value)
+
+        return arr
 
 
 def multiply(a, b):
@@ -83,14 +89,3 @@ def from_array(arr):
                 for row in range(len(m.matrix))]
 
     return m
-
-
-def to_array(m):
-    """Convert a matrix to an array"""
-    arr = []
-
-    for row in range(len(m.matrix)):
-        for value in m.matrix[row]:
-            arr.append(value)
-
-    return arr
