@@ -93,7 +93,7 @@ n = Matrix(3, 2)
 n.fill(15)
 o = substract(m, n)
 if not o.matrix == [[-14, -14], [-14, -14], [-14, -14]]:
-    raise Exception("add function not working with matrix", o.matrix)
+    raise Exception("substract function not working with matrix", o.matrix)
 
 
 print("No errors were found!")
