@@ -1,31 +1,44 @@
-from tnnp.maths.matrix import Matrix, from_array, multiply, transpose
+from tnnp.maths.matrix import Matrix, from_array, multiply, to_array, transpose
 
 m = Matrix(3, 2)
 if not m.matrix == [[0, 0], [0, 0], [0, 0]]:
     raise Exception("Initialization failed!", m.matrix)
 
+m = Matrix(3, 2)
 m.add(5)
 if not m.matrix == [[5, 5], [5, 5], [5, 5]]:
     raise Exception(".add function not working with number", m.matrix)
 
-m.multiply(3)
-if not m.matrix == [[15, 15], [15, 15], [15, 15]]:
-    raise Exception(".multiply function not working", m.matrix)
-
+m = Matrix(3, 2)
 m.fill(1)
 if not m.matrix == [[1, 1], [1, 1], [1, 1]]:
     raise Exception(".fill function not working", m.matrix)
 
+m = Matrix(3, 2)
+m.fill(5)
+m.multiply(3)
+if not m.matrix == [[15, 15], [15, 15], [15, 15]]:
+    raise Exception(".multiply function not working", m.matrix)
+
+m = Matrix(3, 2)
 m.randomize()
 if m.matrix == [[1, 1], [1, 1], [1, 1]]:
     raise Exception(".randomize function not working", m.matrix)
 
-m.fill(1)
+m = Matrix(3, 2)
+m.fill(2)
 m.map(lambda a: a * 2 + 1)
-if not m.matrix == [[3, 3], [3, 3], [3, 3]]:
+if not m.matrix == [[5, 5], [5, 5], [5, 5]]:
     raise Exception(".map function not working", m.matrix)
 
+m = Matrix(3, 2)
+m.fill(1)
+n = m.to_array()
+if not n == [1, 1, 1, 1, 1, 1]:
+    raise Exception(".to_array function not working", n)
 
+
+m = Matrix(3, 2)
 m.fill(1)
 n = Matrix(3, 2)
 n.fill(15)
@@ -50,5 +63,12 @@ if not n.matrix == [[1, 2], [1, 2], [1, 2]]:
 m = from_array([1, 2, 3, 4])
 if not m.matrix == [[1], [2], [3], [4]]:
     raise Exception("from_array function not working", m.matrix)
+
+m = Matrix(3, 2)
+m.fill(1)
+n = to_array(m)
+if not n == [1, 1, 1, 1, 1, 1]:
+    raise Exception(".to_array function not working", n)
+
 
 print("No errors were found!")
