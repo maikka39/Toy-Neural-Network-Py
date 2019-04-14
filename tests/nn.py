@@ -1,4 +1,4 @@
-import random
+from random import randint
 
 from tnnp import nn as tnnp
 
@@ -13,31 +13,25 @@ if output < [-1] or output > [1]:
     raise Exception("feedforward function failed!", m.matrix)
 
 
-training_data = [
-    {
-        "inputs": [0, 0],
-        "targets": [0]
-    },
-    {
-        "inputs": [0, 1],
-        "targets": [1]
-    },
-    {
-        "inputs": [1, 0],
-        "targets": [1]
-    },
-    {
-        "inputs": [1, 1],
-        "targets": [0]
-    }
-]
+def formula(x):
+    # f(x) = mx + b
+    if x == [0, 0]:
+        return [0]
+    if x == [0, 1]:
+        return [1]
+    if x == [1, 0]:
+        return [1]
+    if x == [1, 1]:
+        return [0]
+
+
 nn = tnnp.NeuralNetwork(2, 2, 1)
-for i in range(100000):
-    data = random.choice(training_data)
-    nn.train(data.get("inputs"), data.get("targets"))
+for i in range(50000):
+    data = [randint(0, 1), randint(0, 1)]
+    nn.train(data, formula(data))
 values = []
-for data in training_data:
-    output = nn.feedforward(data.get("inputs"))
+for data in [[0, 0], [0, 1], [1, 0], [1, 1]]:
+    output = nn.feedforward(data)
     values.append(round(output[0]))
 if not values == [0, 1, 1, 0]:
     raise Exception(
