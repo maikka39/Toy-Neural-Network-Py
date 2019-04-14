@@ -1,8 +1,14 @@
-from tnnp.maths.matrix import Matrix, from_array, multiply, transpose
+from tnnp.maths.matrix import (Matrix, add, from_array, multiply, substract,
+                               transpose)
 
 m = Matrix(3, 2)
 if not m.matrix == [[0, 0], [0, 0], [0, 0]]:
     raise Exception("Initialization failed!", m.matrix)
+
+m = Matrix(3, 2)
+m.fill(1)
+if not m.matrix == [[1, 1], [1, 1], [1, 1]]:
+    raise Exception(".fill function not working", m.matrix)
 
 m = Matrix(3, 2)
 m.add(5)
@@ -10,9 +16,10 @@ if not m.matrix == [[5, 5], [5, 5], [5, 5]]:
     raise Exception(".add function not working with number", m.matrix)
 
 m = Matrix(3, 2)
-m.fill(1)
-if not m.matrix == [[1, 1], [1, 1], [1, 1]]:
-    raise Exception(".fill function not working", m.matrix)
+m.fill(10)
+m.substract(5)
+if not m.matrix == [[5, 5], [5, 5], [5, 5]]:
+    raise Exception(".substract function not working with number", m.matrix)
 
 m = Matrix(3, 2)
 m.fill(5)
@@ -46,6 +53,14 @@ m.add(n)
 if not m.matrix == [[16, 16], [16, 16], [16, 16]]:
     raise Exception(".add function not working with matrix", m.matrix)
 
+m = Matrix(3, 2)
+m.fill(1)
+n = Matrix(3, 2)
+n.fill(15)
+m.substract(n)
+if not m.matrix == [[-14, -14], [-14, -14], [-14, -14]]:
+    raise Exception(".substract function not working with matrix", m.matrix)
+
 m = Matrix(2, 3)
 m.matrix = [[7, 7, 8], [5, 9, 4]]
 n = Matrix(3, 2)
@@ -63,6 +78,22 @@ if not n.matrix == [[1, 2], [1, 2], [1, 2]]:
 m = from_array([1, 2, 3, 4])
 if not m.matrix == [[1], [2], [3], [4]]:
     raise Exception("from_array function not working", m.matrix)
+
+m = Matrix(3, 2)
+m.fill(1)
+n = Matrix(3, 2)
+n.fill(15)
+o = add(m, n)
+if not o.matrix == [[16, 16], [16, 16], [16, 16]]:
+    raise Exception("add function not working with matrix", o.matrix)
+
+m = Matrix(3, 2)
+m.fill(1)
+n = Matrix(3, 2)
+n.fill(15)
+o = substract(m, n)
+if not o.matrix == [[-14, -14], [-14, -14], [-14, -14]]:
+    raise Exception("add function not working with matrix", o.matrix)
 
 
 print("No errors were found!")

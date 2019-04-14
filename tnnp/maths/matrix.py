@@ -31,6 +31,16 @@ class Matrix(object):
         self.matrix = [[value + n for value in self.matrix[row]]
                        for row in range(len(self.matrix))]
 
+    def substract(self, n):
+        """Substract a number or matrix from all values in the matrix."""
+        if isinstance(n, Matrix):
+            self.matrix = [[value - n.matrix[row][column] for column, value in enumerate(self.matrix[row])]
+                           for row in range(len(self.matrix))]
+            return
+
+        self.matrix = [[value - n for value in self.matrix[row]]
+                       for row in range(len(self.matrix))]
+
     def randomize(self, smallest=1, biggest=10):
         """Randomize all values in the matrix."""
         self.matrix = [[random() * 2 - 1 for value in self.matrix[row]]
@@ -89,3 +99,19 @@ def from_array(arr):
                 for row in range(len(m.matrix))]
 
     return m
+
+
+def add(m1, m2):
+    """Add a matrix to a matrix."""
+    output = Matrix(m1.rows, m1.cols)
+    output.matrix = [[value + m2.matrix[row][column] for column, value in enumerate(m1.matrix[row])]
+                     for row in range(len(m1.matrix))]
+    return output
+
+
+def substract(m1, m2):
+    """Substract a matrix from a matrix."""
+    output = Matrix(m1.rows, m1.cols)
+    output.matrix = [[value - m2.matrix[row][column] for column, value in enumerate(m1.matrix[row])]
+                     for row in range(len(m1.matrix))]
+    return output
