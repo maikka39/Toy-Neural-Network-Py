@@ -1,4 +1,4 @@
-from tnnp.maths.matrix import Matrix, multiply, transpose
+from tnnp.maths.matrix import Matrix, from_array, multiply, transpose
 
 m = Matrix(3, 2)
 if not m.matrix == [[0, 0], [0, 0], [0, 0]]:
@@ -47,5 +47,8 @@ n = transpose(m)
 if not n.matrix == [[1, 2], [1, 2], [1, 2]]:
     raise Exception("transpose function not working", n.matrix)
 
+m = from_array([1, 2, 3, 4])
+if not m.matrix == [[1], [2], [3], [4]]:
+    raise Exception("from_array function not working", m.matrix)
 
 print("No errors were found!")

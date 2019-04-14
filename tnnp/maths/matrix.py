@@ -69,3 +69,12 @@ def transpose(m):
             result.matrix[i][j] = m.matrix[j][i]
 
     return result
+
+
+def from_array(arr):
+    m = Matrix(len(arr), 1)
+
+    m.matrix = [[arr[row] for index in m.matrix[row]]
+                for row in range(len(m.matrix))]
+
+    return m
