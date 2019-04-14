@@ -72,6 +72,7 @@ def transpose(m):
 
 
 def from_array(arr):
+    """Create a matrix from an array"""
     m = Matrix(len(arr), 1)
 
     m.matrix = [[arr[row] for index in m.matrix[row]]
