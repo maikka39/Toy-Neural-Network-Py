@@ -1,4 +1,4 @@
-from random import randint
+from random import random
 
 
 class Matrix(object):
@@ -33,7 +33,7 @@ class Matrix(object):
 
     def randomize(self, smallest=1, biggest=10):
         """Randomize all values in the matrix."""
-        self.matrix = [[randint(smallest, biggest) for value in self.matrix[row]]
+        self.matrix = [[random() * 2 - 1 for value in self.matrix[row]]
                        for row in range(len(self.matrix))]
 
     def map(self, fn):
