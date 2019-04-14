@@ -1,5 +1,5 @@
-from tnnp.maths.matrix import (Matrix, add, from_array, multiply, substract,
-                               transpose)
+from tnnp.maths.matrix import (Matrix, add, from_array, map, multiply,
+                               substract, transpose)
 
 m = Matrix(3, 2)
 if not m.matrix == [[0, 0], [0, 0], [0, 0]]:
@@ -94,6 +94,13 @@ n.fill(15)
 o = substract(m, n)
 if not o.matrix == [[-14, -14], [-14, -14], [-14, -14]]:
     raise Exception("substract function not working with matrix", o.matrix)
+
+
+m = Matrix(3, 2)
+m.fill(2)
+n = map(m, lambda n: n * 2 + 1)
+if not n.matrix == [[5, 5], [5, 5], [5, 5]]:
+    raise Exception("map function not working", n.matrix)
 
 
 print("No errors were found!")

@@ -119,3 +119,11 @@ def substract(m1, m2):
     output.matrix = [[value - m2.matrix[row][column] for column, value in enumerate(m1.matrix[row])]
                      for row in range(len(m1.matrix))]
     return output
+
+
+def map(m, fn):
+    """Run a function over every value in the matrix."""
+    output = Matrix(m.rows, m.cols)
+    output.matrix = [[fn(value) for value in m.matrix[row]]
+                     for row in range(len(m.matrix))]
+    return output
