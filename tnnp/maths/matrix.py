@@ -56,6 +56,13 @@ class Matrix(object):
         self.matrix = [[fn(value) for value in self.matrix[row]]
                        for row in range(len(self.matrix))]
 
+    def copy(self):
+        """Returns a copy of the matrix"""
+        m = Matrix(self.rows, self.cols)
+        m.matrix = [[value for value in self.matrix[row]]
+                    for row in range(len(self.matrix))]
+        return m
+
     def to_array(self):
         """Convert a matrix to an array"""
         arr = []

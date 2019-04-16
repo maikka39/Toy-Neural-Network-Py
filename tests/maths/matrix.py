@@ -47,6 +47,14 @@ if not n == [1, 1, 1, 1, 1, 1]:
 
 m = Matrix(3, 2)
 m.fill(1)
+n = m.copy()
+m.fill(2)
+if not n.matrix == [[1, 1], [1, 1], [1, 1]] or not m.matrix == [[2, 2], [2, 2], [2, 2]]:
+    raise Exception(".copy function not working", n.matrix)
+
+
+m = Matrix(3, 2)
+m.fill(1)
 n = Matrix(3, 2)
 n.fill(15)
 m.add(n)
