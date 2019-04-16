@@ -16,13 +16,13 @@ if output < [-1] or output > [1]:
 def formula(x):
     # f(x) = mx + b
     if x == [0, 0]:
-        return [0]
+        return [-1]
     if x == [0, 1]:
         return [1]
     if x == [1, 0]:
         return [1]
     if x == [1, 1]:
-        return [0]
+        return [-1]
 
 
 nn = tnnp.NeuralNetwork(2, 2, 1)
@@ -33,7 +33,7 @@ values = []
 for data in [[0, 0], [0, 1], [1, 0], [1, 1]]:
     output = nn.feedforward(data)
     values.append(round(output[0]))
-if not values == [0, 1, 1, 0]:
+if not values == [-1, 1, 1, -1]:
     raise Exception(
         ".train function failed! You might want to try running this script again.", values)
 

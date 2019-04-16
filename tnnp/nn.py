@@ -47,7 +47,7 @@ class NeuralNetwork(object):
     def setLearningRate(self, learning_rate=0.1):
         self.learning_rate = learning_rate
 
-    def setActivationFunction(self, fn=activation.sigmoid):
+    def setActivationFunction(self, fn=activation.tanh):
         self.activation_function = fn
 
     def feedforward(self, input_array):
