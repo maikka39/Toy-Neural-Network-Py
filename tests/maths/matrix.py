@@ -50,7 +50,7 @@ m.fill(1)
 n = m.copy()
 m.fill(2)
 if not n.matrix == [[1, 1], [1, 1], [1, 1]] or not m.matrix == [[2, 2], [2, 2], [2, 2]]:
-    raise Exception(".copy function not working", n.matrix)
+    raise Exception(".copy function not working", n.matrix, m.matrix)
 
 
 m = Matrix(3, 2)
