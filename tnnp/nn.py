@@ -1,5 +1,6 @@
 from math import exp
 
+import dill
 import tnnp.maths.matrix as matrix
 
 # from tnnp.maths.matrix import Matrix, multiply, transpose
@@ -27,23 +28,41 @@ tanh = ActivationFunction(
 class NeuralNetwork(object):
     """Multi Layer NeuralNetwork."""
 
-    def __init__(self, input_nodes, hidden_nodes, output_nodes):
-        self.input_nodes = input_nodes
-        self.hidden_nodes = hidden_nodes
-        self.output_nodes = output_nodes
+    def __init__(self, input_nodes, hidden_nodes=1, output_nodes=1):
+        if isinstance(input_nodes, NeuralNetwork):
+            nn = input_nodes
+            self.input_nodes = nn.input_nodes
+            self.hidden_nodes = nn.hidden_nodes
+            self.output_nodes = nn.output_nodes
 
-        self.setLearningRate()
-        self.setActivationFunction()
+            self.weights_ih = nn.weights_ih.copy()
+            self.weights_ho = nn.weights_ho.copy()
 
-        self.weights_ih = matrix.Matrix(self.hidden_nodes, self.input_nodes)
-        self.weights_ho = matrix.Matrix(self.output_nodes, self.hidden_nodes)
-        self.weights_ih.randomize()
-        self.weights_ho.randomize()
+            self.bias_h = nn.bias_h.copy()
+            self.bias_o = nn.bias_o.copy()
 
-        self.bias_h = matrix.Matrix(self.hidden_nodes, 1)
-        self.bias_o = matrix.Matrix(self.output_nodes, 1)
-        self.bias_h.fill(1)
-        self.bias_o.fill(1)
+            self.setLearningRate(nn.learning_rate)
+            self.setActivationFunction(nn.activation_function)
+
+        else:
+            self.input_nodes = input_nodes
+            self.hidden_nodes = hidden_nodes
+            self.output_nodes = output_nodes
+
+            self.weights_ih = matrix.Matrix(
+                self.hidden_nodes, self.input_nodes)
+            self.weights_ho = matrix.Matrix(
+                self.output_nodes, self.hidden_nodes)
+            self.weights_ih.randomize()
+            self.weights_ho.randomize()
+
+            self.bias_h = matrix.Matrix(self.hidden_nodes, 1)
+            self.bias_o = matrix.Matrix(self.output_nodes, 1)
+            self.bias_h.fill(1)
+            self.bias_o.fill(1)
+
+            self.setLearningRate()
+            self.setActivationFunction()
 
     def setLearningRate(self, learning_rate=0.1):
         self.learning_rate = learning_rate
@@ -113,5 +132,20 @@ class NeuralNetwork(object):
         self.bias_h.map(func)
         self.bias_o.map(func)
 
+    def copy(self):
+        """Returns a copy of the current network"""
+        return NeuralNetwork(self)
+
+    def save(self, path):
+        """Save the current network to a file"""
+        with open('{}'.format(path), 'wb') as f:
+            dill.dump(self, f)
+
     # Set aliasses
     guess = feedforward
+
+
+def load(path):
+    """Load a network from a file"""
+    with open('{}'.format(path), 'rb') as f:
+        return dill.load(f)
