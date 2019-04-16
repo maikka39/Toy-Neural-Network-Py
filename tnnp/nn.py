@@ -1,28 +1,8 @@
-from math import exp
-
 import dill
 import tnnp.maths.matrix as matrix
+from tnnp import activation
 
 # from tnnp.maths.matrix import Matrix, multiply, transpose
-
-
-class ActivationFunction(object):
-    """Activation Function."""
-
-    def __init__(self, func, dfunc):
-        self.func = func
-        self.dfunc = dfunc
-
-
-sigmoid = ActivationFunction(
-    lambda n: 1 / (1 + exp(-n)),
-    lambda n: n * (1 - n)
-)
-
-tanh = ActivationFunction(
-    lambda n: (1 - exp(-2 * n)) / (1 + exp(-2 * n)),
-    lambda n: 1 - (n * n)
-)
 
 
 class NeuralNetwork(object):
@@ -67,7 +47,7 @@ class NeuralNetwork(object):
     def setLearningRate(self, learning_rate=0.1):
         self.learning_rate = learning_rate
 
-    def setActivationFunction(self, fn=sigmoid):
+    def setActivationFunction(self, fn=activation.sigmoid):
         self.activation_function = fn
 
     def feedforward(self, input_array):
