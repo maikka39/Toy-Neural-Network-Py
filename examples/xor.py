@@ -2,21 +2,26 @@ from random import randint
 
 import matplotlib.pyplot as plt
 
+from tnnp import activation
 from tnnp import nn as tnnp
 
 res = 20
 
 
+def vmap(n, start1, stop1, start2, stop2):
+    return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2
+
+
 def formula(x):
     # f(x) = mx + b
     if x == [0, 0]:
-        return [0]
+        return [-1]
     if x == [0, 1]:
         return [1]
     if x == [1, 0]:
         return [1]
     if x == [1, 1]:
-        return [0]
+        return [-1]
 
 
 class Point:
@@ -37,6 +42,7 @@ ax.set(xlabel='X', ylabel='Y',
 ax.grid()
 
 nn = tnnp.NeuralNetwork(2, 2, 1)
+nn.setActivationFunction(activation.tanh)
 
 points = []
 for x in range(res + 1):
@@ -44,7 +50,7 @@ for x in range(res + 1):
         points.append(Point(x / res, y / res, "0"))
 
 while True:
-    for i in range(1000):
+    for i in range(100):
         data = [randint(0, 1), randint(0, 1)]
         nn.train(data, formula(data))
 
@@ -53,8 +59,9 @@ while True:
         print([(round(output[0]))], output)
 
     for point in points:
-        color = str(nn.guess([point.x, point.y])[0])
-        point.change_color(color)
+        color = nn.guess([point.x, point.y])[0]
+        color = vmap(color, -1, 1, 0, 1)
+        point.change_color(str(color))
 
     print("")
     plt.pause(0.05)
