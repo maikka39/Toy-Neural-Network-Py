@@ -62,7 +62,7 @@ ax.plot(formula_line_x, formula_line_y, linewidth=3, c="black")
 
 
 perceptron = pct.Perceptron(2)
-points = [Point(color="red") for i in range(100)]
+points = [Point(color="red") for _ in range(200)]
 
 # Plot guessed line
 guess_line = ax.plot(
@@ -71,7 +71,7 @@ guess_line = ax.plot(
     linewidth=3, c="blue")
 
 while True:
-    for train_point in [Point(train_point=True) for i in range(15)]:
+    for train_point in [Point(train_point=True) for _ in range(15)]:
         perceptron.train((train_point.x, train_point.y), train_point.label)
 
     for point in points:
@@ -88,6 +88,3 @@ while True:
         linewidth=3, c="blue")
 
     plt.pause(0.05)
-
-
-plt.show()
