@@ -42,7 +42,7 @@ ax.set(xlabel='X', ylabel='Y',
 ax.grid()
 
 nn = tnnp.NeuralNetwork(2, 2, 1)
-nn.setActivationFunction(activation.tanh)
+nn.setActivationFunction(activation.sigmoid)
 
 points = []
 for x in range(res + 1):
@@ -65,6 +65,3 @@ while True:
 
     print("")
     plt.pause(0.05)
-
-
-plt.show()
