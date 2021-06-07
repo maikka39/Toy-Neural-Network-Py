@@ -15,5 +15,8 @@ setup(
     author_email='maikka39@gmail.com',
     url='https://github.com/maikka39/Toy-Neural-Network-Py',
     license=license,
+    install_requires=[
+        'dill',
+    ],
     packages=find_packages(exclude=('docs', 'tests', 'examples'))
 )
